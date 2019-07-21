@@ -18,6 +18,29 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+function faster()
+{
+	if(config_speed_wpm < 50)
+	{
+		config_speed_wpm += 1;
+		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
+	}
+}
+
+
+function slower()
+{
+	if(config_speed_wpm > 5)
+	{
+		config_speed_wpm -= 1;
+		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
+	}
+}
+
+
 async function play()
 {
 	addLetterToQueue('h');
