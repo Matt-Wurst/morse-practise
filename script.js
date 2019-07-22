@@ -1,6 +1,6 @@
 
 var config_speed_wpm = 20;
-
+var config_beep_frequency_hz = 600;
 
 
 
@@ -10,7 +10,6 @@ var beepQueue = [];
 var correctLetter;
 
 var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
-
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -73,6 +72,7 @@ async function playQueue(callback)
 		if(nextLetter === '.')
 		{
 			var o = context.createOscillator()
+			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
 			o.connect(context.destination)
 			o.start()
@@ -83,6 +83,7 @@ async function playQueue(callback)
 		else if(nextLetter === '-')
 		{
 			var o = context.createOscillator()
+			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
 			o.connect(context.destination)
 			o.start()
