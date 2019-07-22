@@ -6,7 +6,6 @@ var config_speed_wpm = 20;
 
 
 
-
 var beepQueue = [];
 var correctLetter;
 
@@ -40,6 +39,20 @@ function slower()
 }
 
 
+
+
+window.onkeydown = playChar
+
+function playChar(c)
+{
+	console.log(c)
+	addLetterToQueue(c.key)
+	playQueue()
+}
+
+
+
+
 async function play()
 {
 	var input = document.getElementById("inputWord").value;
@@ -48,8 +61,11 @@ async function play()
 }
 
 
+var isPlaying = false;
 async function playQueue(callback)
 {
+	if(isPlaying){return;}
+	isPlaying = true;
 	var context = new AudioContext()
 	while(beepQueue.length > 0)
 	{
@@ -79,6 +95,7 @@ async function playQueue(callback)
 			await sleep(2 * tickLengthMs);
 		}
 	}
+	isPlaying = false;
 	if(callback)
 	{
 		callback()
