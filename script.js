@@ -14,7 +14,8 @@ var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual fo
 var rampLengthMs = tickLengthMs / 2;
 if(rampLengthMs > 50) rampLengthMs = 50;
 
-function sleep(ms) {
+function sleep(ms)
+{
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -76,8 +77,8 @@ function confirmChar(c)
 
 function playChar(c)
 {
-	addLetterToQueue(c)
-	playQueue()
+	addLetterToQueue(c);
+	playQueue();
 }
 
 function playRandomChar()
@@ -98,7 +99,7 @@ async function play()
 
 
 
-var context = new AudioContext()
+var context = new AudioContext();
 
 
 async function playQueue(callback)
@@ -108,38 +109,36 @@ async function playQueue(callback)
 	
 	while(beepQueue.length > 0)
 	{
+		var currentTime = context.currentTime;
 		var nextLetter = beepQueue.shift();
+		var o = context.createOscillator();
+		var g = context.createGain();
+		
 		if(nextLetter === '.')
 		{
-			var currentTime = context.currentTime;
-			var o = context.createOscillator()
-			var g = context.createGain()
 			g.gain.setValueAtTime(1, currentTime);
 			g.gain.setValueAtTime(1, currentTime + 0.001*(tickLengthMs));
 			g.gain.linearRampToValueAtTime(0, currentTime + 0.001*(tickLengthMs+rampLengthMs));
 			o.frequency.value = config_beep_frequency_hz;
-			o.type = "sine"
-			o.connect(g)
-			g.connect(context.destination)
-			o.start()
+			o.type = "sine";
+			o.connect(g);
+			g.connect(context.destination);
+			o.start();
 			await sleep(2*tickLengthMs);
-			o.stop()
+			o.stop();
 		}
 		else if(nextLetter === '-')
 		{
-			var currentTime = context.currentTime;
-			var o = context.createOscillator()
-			var g = context.createGain()
 			g.gain.setValueAtTime(1, currentTime);
 			g.gain.setValueAtTime(1, currentTime + 0.001*(3*tickLengthMs));
 			g.gain.linearRampToValueAtTime(0,  currentTime + 0.001*(3*tickLengthMs+rampLengthMs));
 			o.frequency.value = config_beep_frequency_hz;
-			o.type = "sine"
-			o.connect(g)
-			g.connect(context.destination)
-			o.start()
+			o.type = "sine";
+			o.connect(g);
+			g.connect(context.destination);
+			o.start();
 			await sleep(4 * tickLengthMs);
-			o.stop()
+			o.stop();
 		}
 		else if(nextLetter === ' ')
 		{
@@ -149,23 +148,23 @@ async function playQueue(callback)
 	isPlaying = false;
 	if(callback)
 	{
-		callback()
+		callback();
 	}
 }
 
 
 function addStringToQueue(string)
 {
-	var array = Array.from(string)
-	addLetterArrayToQueue(array)
+	var array = Array.from(string);
+	addLetterArrayToQueue(array);
 }
 
 function addLetterArrayToQueue(array)
 {
 	while(array.length > 0)
 	{
-		var letter = array.shift()
-		addLetterToQueue(letter)
+		var letter = array.shift();
+		addLetterToQueue(letter);
 	}
 }
 
