@@ -172,6 +172,7 @@ function addLetterToQueue(letter)
 {
 	switch(letter)
 	{
+		//Basic alphabet
 		case 'a': case 'A':beepQueue.push('.','-',			' '); break;
 		case 'b': case 'B':beepQueue.push('-','.','.','.',	' '); break;
 		case 'c': case 'C':beepQueue.push('-','.','-','.',	' '); break;
@@ -198,8 +199,11 @@ function addLetterToQueue(letter)
 		case 'x': case 'X':beepQueue.push('-','.','.','-',	' '); break;
 		case 'y': case 'Y':beepQueue.push('-','.','-','-',	' '); break;
 		case 'z': case 'Z':beepQueue.push('-','-','.','.',	' '); break;
+		
+		//Space
 		case ' ': beepQueue.push(' ',' ',' '); break;
 		
+		//Numbers
 		case '0': beepQueue.push('-','-','-','-','-',	' '); break;
 		case '1': beepQueue.push('.','-','-','-','-',	' '); break;
 		case '2': beepQueue.push('.','.','-','-','-',	' '); break;
@@ -210,6 +214,26 @@ function addLetterToQueue(letter)
 		case '7': beepQueue.push('-','-','.','.','.',	' '); break;
 		case '8': beepQueue.push('-','-','-','.','.',	' '); break;
 		case '9': beepQueue.push('-','-','-','-','.',	' '); break;
+		
+		//Other characters
+		case '.': beepQueue.push('.','-','.','-','.','-',		' '); break;	//Period
+		case ',': beepQueue.push('-','-','.','.','-','-',		' '); break;	//Comma
+		case '?': beepQueue.push('.','.','-','-','.','.',		' '); break;	//Question Mark
+		case '\'':beepQueue.push('.','-','-','-','-','.',		' '); break;	//Apostrophe
+		case '!': beepQueue.push('-','.','-','.','-','-',		' '); break;	//Exclamation mark
+		case '/': beepQueue.push('-','.','.','-','.',			' '); break;	//Slash
+		case '(': beepQueue.push('-','.','-','-','.',			' '); break;	//Opening parenthesis
+		case ')': beepQueue.push('-','.','-','-','.','-',		' '); break;	//Closing parenthesis
+		case '&': beepQueue.push('.','-','.','.','.',			' '); break;	//Ampersand
+		case ':': beepQueue.push('-','-','-','.','.','.',		' '); break;	//Colon
+		case ';': beepQueue.push('-','.','-','.','-','.',		' '); break;	//Semicolon
+		case '=': beepQueue.push('-','.','.','.','-',			' '); break;	//Equals
+		case '+': beepQueue.push('.','-','.','-','.',			' '); break;	//Plus
+		case '-': beepQueue.push('-','.','.','.','.','-',		' '); break;	//Minus
+		case '_': beepQueue.push('.','.','-','-','.','-',		' '); break;	//Underscore
+		case '"': beepQueue.push('.','-','.','.','-','.',		' '); break;	//Quotation Mark
+		case '$': beepQueue.push('.','.','.','-','.','.','-',	' '); break;	//Dollar sign
+		case '@': beepQueue.push('.','-','-','.','-','.',		' '); break;	//At sign
 	}
 	
 }
