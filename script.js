@@ -10,6 +10,8 @@ var beepQueue = [];
 var correctLetter;
 
 var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
+var rampLengthMs = tickLengthMs / 3;
+if(rampLengthMs > 50) rampLengthMs = 50;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -22,6 +24,8 @@ function faster()
 	{
 		config_speed_wpm += 1;
 		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+		rampLengthMs = tickLengthMs / 3;
+		if(rampLengthMs > 50) rampLengthMs = 50;
 		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
 	}
 }
@@ -33,6 +37,8 @@ function slower()
 	{
 		config_speed_wpm -= 1;
 		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+		rampLengthMs = tickLengthMs / 3;
+		if(rampLengthMs > 50) rampLengthMs = 50;
 		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
 	}
 }
@@ -44,7 +50,7 @@ window.onkeydown = playChar
 
 function playChar(c)
 {
-	console.log(c)
+	//console.log(c)
 	addLetterToQueue(c.key)
 	playQueue()
 }
@@ -72,24 +78,30 @@ async function playQueue(callback)
 		if(nextLetter === '.')
 		{
 			var o = context.createOscillator()
+			var g = context.createGain()
+			g.gain.setValueAtTime(1, tickLengthMs);
+			g.gain.linearRampToValueAtTime(0, tickLengthMs+rampLengthMs);
 			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
 			o.connect(context.destination)
 			o.start()
-			await sleep(tickLengthMs);
+			await sleep(tickLengthMs+rampLengthMs);
 			o.stop()
-			await sleep(tickLengthMs);
+			await sleep(tickLengthMs-rampLengthMs);
 		}
 		else if(nextLetter === '-')
 		{
 			var o = context.createOscillator()
+			var g = context.createGain()
+			g.gain.setValueAtTime(1, 3*tickLengthMs);
+			g.gain.linearRampToValueAtTime(0, 3*tickLengthMs+rampLengthMs);
 			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
 			o.connect(context.destination)
 			o.start()
-			await sleep(3 * tickLengthMs);
+			await sleep(3 * tickLengthMs+rampLengthMs);
 			o.stop()
-			await sleep(tickLengthMs);
+			await sleep(tickLengthMs-rampLengthMs);
 		}
 		else if(nextLetter === ' ')
 		{
