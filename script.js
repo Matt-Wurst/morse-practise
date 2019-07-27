@@ -8,6 +8,7 @@ var config_beep_frequency_hz = 600;
 
 var beepQueue = [];
 var correctLetter;
+var isPlaying = false;
 
 var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
 var rampLengthMs = tickLengthMs / 3;
@@ -46,16 +47,46 @@ function slower()
 
 
 
-window.onkeydown = playChar
+window.onkeydown = confirmChar
+var chars = new Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+var isFirstPress = true;
+
+function confirmChar(c)
+{
+	var pressed = c.key;
+	if(isFirstPress)
+	{
+		isFirstPress = false;
+		playRandomChar();
+	}
+	else if(!isPlaying && chars.includes(pressed))
+	{
+		if(pressed === correctLetter)
+		{
+			document.body.style.backgroundColor = "lightgreen";
+			playRandomChar();
+		}
+		else
+		{
+			document.body.style.backgroundColor = "red";
+			playChar(correctLetter);
+		}
+	}
+}
 
 function playChar(c)
 {
-	//console.log(c)
-	addLetterToQueue(c.key)
+	addLetterToQueue(c)
 	playQueue()
 }
 
-
+function playRandomChar()
+{
+	var charIndex = Math.floor(Math.random() * chars.length);   
+	var c = chars[charIndex];
+	playChar(c);
+	correctLetter = c;
+}
 
 
 async function play()
@@ -66,7 +97,6 @@ async function play()
 }
 
 
-var isPlaying = false;
 async function playQueue(callback)
 {
 	if(isPlaying){return;}
@@ -83,6 +113,7 @@ async function playQueue(callback)
 			g.gain.linearRampToValueAtTime(0, tickLengthMs+rampLengthMs);
 			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
+			o.connect(g)
 			o.connect(context.destination)
 			o.start()
 			await sleep(tickLengthMs+rampLengthMs);
@@ -94,9 +125,10 @@ async function playQueue(callback)
 			var o = context.createOscillator()
 			var g = context.createGain()
 			g.gain.setValueAtTime(1, 3*tickLengthMs);
-			g.gain.linearRampToValueAtTime(0, 3*tickLengthMs+rampLengthMs);
+			g.gain.linearRampToValueAtTime(0,  3*tickLengthMs+rampLengthMs);
 			o.frequency.value = config_beep_frequency_hz;
 			o.type = "sine"
+			o.connect(g)
 			o.connect(context.destination)
 			o.start()
 			await sleep(3 * tickLengthMs+rampLengthMs);
