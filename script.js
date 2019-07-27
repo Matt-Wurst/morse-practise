@@ -198,7 +198,18 @@ function addLetterToQueue(letter)
 		case 'x': case 'X':beepQueue.push('-','.','.','-',	' '); break;
 		case 'y': case 'Y':beepQueue.push('-','.','-','-',	' '); break;
 		case 'z': case 'Z':beepQueue.push('-','-','.','.',	' '); break;
-		case ' ': beepQueue.push(' ',' ',' ',' ',' ',' '); break;
+		case ' ': beepQueue.push(' ',' ',' '); break;
+		
+		case '0': beepQueue.push('-','-','-','-','-',	' '); break;
+		case '1': beepQueue.push('.','-','-','-','-',	' '); break;
+		case '2': beepQueue.push('.','.','-','-','-',	' '); break;
+		case '3': beepQueue.push('.','.','.','-','-',	' '); break;
+		case '4': beepQueue.push('.','.','.','.','-',	' '); break;
+		case '5': beepQueue.push('.','.','.','.','.',	' '); break;
+		case '6': beepQueue.push('-','.','.','.','.',	' '); break;
+		case '7': beepQueue.push('-','-','.','.','.',	' '); break;
+		case '8': beepQueue.push('-','-','-','.','.',	' '); break;
+		case '9': beepQueue.push('-','-','-','-','.',	' '); break;
 	}
 	
 }
