@@ -11,7 +11,7 @@ var correctLetter;
 var isPlaying = false;
 
 var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
-var rampLengthMs = tickLengthMs / 2;
+var rampLengthMs = tickLengthMs / 4;
 if(rampLengthMs > 50) rampLengthMs = 50;
 
 function sleep(ms)
