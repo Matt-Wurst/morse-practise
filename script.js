@@ -146,6 +146,7 @@ async function playQueue(callback)
 		}
 	}
 	isPlaying = false;
+	document.body.style.backgroundColor = "#ffff88";
 	if(callback)
 	{
 		callback();
