@@ -8,6 +8,11 @@ var config_beep_frequency_hz = 600;
 
 var beepQueue = [];
 var correctLetter;
+
+var correctLetterList = [];
+var correctLetterIndex = 0;
+var numOfChars = 4;
+
 var isPlaying = false;
 
 var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
@@ -26,7 +31,7 @@ function faster()
 	{
 		config_speed_wpm += 1;
 		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
-		rampLengthMs = tickLengthMs / 3;
+		rampLengthMs = tickLengthMs / 4;
 		if(rampLengthMs > 50) rampLengthMs = 50;
 		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
 	}
@@ -39,7 +44,7 @@ function slower()
 	{
 		config_speed_wpm -= 1;
 		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
-		rampLengthMs = tickLengthMs / 3;
+		rampLengthMs = tickLengthMs / 4;
 		if(rampLengthMs > 50) rampLengthMs = 50;
 		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
 	}
@@ -48,7 +53,6 @@ function slower()
 
 
 
-window.onkeydown = confirmChar
 var chars = new Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
 var isFirstPress = true;
 
@@ -75,6 +79,39 @@ function confirmChar(c)
 	}
 }
 
+function confirmChars(c)
+{
+	var pressed = c.key;
+	if(isFirstPress)
+	{
+		isFirstPress = false;
+		playRandomChars(numOfChars);
+	}
+	else if(!isPlaying && chars.includes(pressed))
+	{
+		var correct = correctLetterList[correctLetterIndex];
+		if(pressed === correct)
+		{
+			correctLetterIndex++;
+			document.body.style.backgroundColor = "lightgreen";
+			if(correctLetterIndex === correctLetterList.length)	//End of list reached
+			{
+				correctLetterIndex = 0;
+				correctLetterList = [];
+				playRandomChars(numOfChars);
+			}
+		}
+		else
+		{
+			document.body.style.backgroundColor = "red";
+			correctLetterIndex = 0;
+			addLetterArrayToQueue(correctLetterList);
+			playQueue();
+		}
+	}
+}
+
+
 function playChar(c)
 {
 	addLetterToQueue(c);
@@ -87,6 +124,18 @@ function playRandomChar()
 	var c = chars[charIndex];
 	playChar(c);
 	correctLetter = c;
+}
+
+function playRandomChars(ammount)
+{
+	while(ammount > 0)
+	{
+		var charIndex = Math.floor(Math.random() * chars.length);   
+		var c = chars[charIndex];
+		playChar(c);
+		correctLetterList.push(c);
+		ammount--;
+	}
 }
 
 
@@ -162,9 +211,9 @@ function addStringToQueue(string)
 
 function addLetterArrayToQueue(array)
 {
-	while(array.length > 0)
+	for(var i = 0; i < array.length; i++)
 	{
-		var letter = array.shift();
+		var letter = array[i];
 		addLetterToQueue(letter);
 	}
 }
