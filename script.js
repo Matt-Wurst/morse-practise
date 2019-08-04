@@ -25,29 +25,13 @@ function sleep(ms)
 }
 
 
-function faster()
-{
-	if(config_speed_wpm < 50)
-	{
-		config_speed_wpm += 1;
-		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
-		rampLengthMs = tickLengthMs / 4;
-		if(rampLengthMs > 50) rampLengthMs = 50;
-		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
-	}
-}
 
-
-function slower()
+function updateWpm()
 {
-	if(config_speed_wpm > 5)
-	{
-		config_speed_wpm -= 1;
-		tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
-		rampLengthMs = tickLengthMs / 4;
-		if(rampLengthMs > 50) rampLengthMs = 50;
-		document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
-	}
+	config_speed_wpm = document.getElementById("speedRange").value
+	tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+	rampLengthMs = tickLengthMs / 4;
+	document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
 }
 
 

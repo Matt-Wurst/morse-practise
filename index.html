@@ -14,8 +14,7 @@
 	If incorrect, the same letter is repeated. <br>
 	<br>
   <p id="speedDisplay">Words per minute: 20</p>
-  <button onclick="faster()">+</button>
-  <button onclick="slower()">-</button>
+  <input id="speedRange" type="range" min="5" max="50" value="20" oninput="updateWpm()">
   <br>
   <br>
   In case you want more of a challenge:
