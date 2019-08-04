@@ -1,5 +1,6 @@
 
 let config_speed_wpm = 20;
+let config_speed_farnsworth_wpm = 20;
 let config_beep_frequency_hz = 600;
 
 
@@ -16,6 +17,7 @@ let numOfChars = 4;
 let isPlaying = false;
 
 let tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
+let farnsworthFactor = ((50*config_speed_wpm/config_speed_farnsworth_wpm)-38)/12; //that's close to the actual formula
 let rampLengthMs = tickLengthMs / 4;
 if(rampLengthMs > 50) rampLengthMs = 50;
 
@@ -28,10 +30,47 @@ function sleep(ms)
 
 function updateWpm()
 {
-	config_speed_wpm = document.getElementById("speedRange").value
+	let speedRange = document.getElementById("speedRange");
+	let speedDisplay = document.getElementById("speedDisplay");
+	let farnsworthRange = document.getElementById("farnsworthRange");
+	let farnsworthDisplay = document.getElementById("farnsworthDisplay");
+	config_speed_wpm = parseInt(speedRange.value);
+	if(config_speed_wpm < config_speed_farnsworth_wpm)
+	{
+		config_speed_farnsworth_wpm = config_speed_wpm;
+		if(farnsworthRange)
+		{
+			farnsworthRange.value = config_speed_farnsworth_wpm;
+			farnsworthDisplay.innerHTML = "Farnsworth WPM: " + config_speed_farnsworth_wpm;
+		}
+	}
 	tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
 	rampLengthMs = tickLengthMs / 4;
-	document.getElementById("speedDisplay").innerHTML = "Words per minute: " + config_speed_wpm;
+	farnsworthFactor = ((50*config_speed_wpm/config_speed_farnsworth_wpm)-38)/12;
+	speedDisplay.innerHTML = "Words per minute: " + config_speed_wpm;
+}
+
+
+function updateFarnsworthWpm()
+{
+	let speedRange = document.getElementById("speedRange");
+	let speedDisplay = document.getElementById("speedDisplay");
+	let farnsworthRange = document.getElementById("farnsworthRange");
+	let farnsworthDisplay = document.getElementById("farnsworthDisplay");
+	config_speed_farnsworth_wpm = parseInt(farnsworthRange.value);
+	console.log(typeof(config_speed_farnsworth_wpm));
+	if(config_speed_wpm < config_speed_farnsworth_wpm)
+	{
+		config_speed_wpm = config_speed_farnsworth_wpm;
+		speedRange.value = config_speed_wpm;
+		speedDisplay.innerHTML = "Words per minute: " + config_speed_wpm;
+	}
+	tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);
+	rampLengthMs = tickLengthMs / 4;
+	farnsworthFactor = ((50*config_speed_wpm/config_speed_farnsworth_wpm)-38)/12;
+	farnsworthRange.value = config_speed_farnsworth_wpm;
+	farnsworthDisplay.innerHTML = "Farnsworth WPM: " + config_speed_farnsworth_wpm;
+	speedDisplay.innerHTML = "Words per minute: " + config_speed_wpm;
 }
 
 
@@ -140,7 +179,7 @@ async function playQueue(callback)
 	if(isPlaying){return;}
 	isPlaying = true;
 	
-	while(beepQueue.length > 0)
+	while(beepQueue.length > 0 && (beepQueue.includes('.') || beepQueue.includes('-')))
 	{
 		let currentTime = context.currentTime;
 		let nextLetter = beepQueue.shift();
@@ -175,7 +214,11 @@ async function playQueue(callback)
 		}
 		else if(nextLetter === ' ')
 		{
-			await sleep(2 * tickLengthMs);
+			await sleep(2 * tickLengthMs * farnsworthFactor);
+		}
+		else
+		{
+			//do nothing
 		}
 	}
 	isPlaying = false;
