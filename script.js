@@ -1,22 +1,22 @@
 
-var config_speed_wpm = 20;
-var config_beep_frequency_hz = 600;
+let config_speed_wpm = 20;
+let config_beep_frequency_hz = 600;
 
 
 
 
 
-var beepQueue = [];
-var correctLetter;
+let beepQueue = [];
+let correctLetter;
 
-var correctLetterList = [];
-var correctLetterIndex = 0;
-var numOfChars = 4;
+let correctLetterList = [];
+let correctLetterIndex = 0;
+let numOfChars = 4;
 
-var isPlaying = false;
+let isPlaying = false;
 
-var tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
-var rampLengthMs = tickLengthMs / 4;
+let tickLengthMs =  1000 / (config_speed_wpm * 50 / 60);  //that's the actual formula
+let rampLengthMs = tickLengthMs / 4;
 if(rampLengthMs > 50) rampLengthMs = 50;
 
 function sleep(ms)
@@ -37,12 +37,12 @@ function updateWpm()
 
 
 
-var chars = new Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
-var isFirstPress = true;
+let chars = new Array('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z')
+let isFirstPress = true;
 
 function confirmChar(c)
 {
-	var pressed = c.key;
+	let pressed = c.key;
 	if(isFirstPress)
 	{
 		isFirstPress = false;
@@ -65,7 +65,7 @@ function confirmChar(c)
 
 function confirmChars(c)
 {
-	var pressed = c.key;
+	let pressed = c.key;
 	if(isFirstPress)
 	{
 		isFirstPress = false;
@@ -73,7 +73,7 @@ function confirmChars(c)
 	}
 	else if(!isPlaying && chars.includes(pressed))
 	{
-		var correct = correctLetterList[correctLetterIndex];
+		let correct = correctLetterList[correctLetterIndex];
 		if(pressed === correct)
 		{
 			correctLetterIndex++;
@@ -104,8 +104,8 @@ function playChar(c)
 
 function playRandomChar()
 {
-	var charIndex = Math.floor(Math.random() * chars.length);   
-	var c = chars[charIndex];
+	let charIndex = Math.floor(Math.random() * chars.length);   
+	let c = chars[charIndex];
 	playChar(c);
 	correctLetter = c;
 }
@@ -114,8 +114,8 @@ function playRandomChars(ammount)
 {
 	while(ammount > 0)
 	{
-		var charIndex = Math.floor(Math.random() * chars.length);   
-		var c = chars[charIndex];
+		let charIndex = Math.floor(Math.random() * chars.length);   
+		let c = chars[charIndex];
 		playChar(c);
 		correctLetterList.push(c);
 		ammount--;
@@ -125,14 +125,14 @@ function playRandomChars(ammount)
 
 async function play()
 {
-	var input = document.getElementById("inputWord").value;
+	let input = document.getElementById("inputWord").value;
 	addStringToQueue(input);
 	playQueue();
 }
 
 
 
-var context = new AudioContext();
+let context = new AudioContext();
 
 
 async function playQueue(callback)
@@ -142,10 +142,10 @@ async function playQueue(callback)
 	
 	while(beepQueue.length > 0)
 	{
-		var currentTime = context.currentTime;
-		var nextLetter = beepQueue.shift();
-		var o = context.createOscillator();
-		var g = context.createGain();
+		let currentTime = context.currentTime;
+		let nextLetter = beepQueue.shift();
+		let o = context.createOscillator();
+		let g = context.createGain();
 		
 		if(nextLetter === '.')
 		{
@@ -189,15 +189,15 @@ async function playQueue(callback)
 
 function addStringToQueue(string)
 {
-	var array = Array.from(string);
+	let array = Array.from(string);
 	addLetterArrayToQueue(array);
 }
 
 function addLetterArrayToQueue(array)
 {
-	for(var i = 0; i < array.length; i++)
+	for(let i = 0; i < array.length; i++)
 	{
-		var letter = array[i];
+		let letter = array[i];
 		addLetterToQueue(letter);
 	}
 }
