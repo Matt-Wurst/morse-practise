@@ -91,7 +91,7 @@ function confirmChar(c)
 	{
 		if(pressed === correctLetter)
 		{
-			document.body.style.backgroundColor = "lightgreen";
+			document.body.style.backgroundColor = "green";
 			playRandomChar();
 		}
 		else
@@ -116,7 +116,7 @@ function confirmChars(c)
 		if(pressed === correct)
 		{
 			correctLetterIndex++;
-			document.body.style.backgroundColor = "lightgreen";
+			document.body.style.backgroundColor = "green";
 			if(correctLetterIndex === correctLetterList.length)	//End of list reached
 			{
 				correctLetterIndex = 0;
@@ -131,6 +131,15 @@ function confirmChars(c)
 			addLetterArrayToQueue(correctLetterList);
 			playQueue();
 		}
+	}
+}
+
+
+function lightgreen()
+{
+	if(document.body.style.backgroundColor == "green")
+	{
+		document.body.style.backgroundColor = "lightgreen";
 	}
 }
 
