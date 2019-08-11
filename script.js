@@ -230,6 +230,7 @@ async function playQueue(callback)
 			//do nothing
 		}
 	}
+	beepQueue = [];
 	isPlaying = false;
 	document.body.style.backgroundColor = "#ffff88";
 	if(callback)
